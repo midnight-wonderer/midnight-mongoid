@@ -1,0 +1,13 @@
+test:
+  clients:
+    default:
+      database: midnight_development
+      hosts:
+        - database:27017
+      options:
+        auth_source: 'admin'
+        user: 'root'
+        password: 'root-password'
+        write:
+          w: 1
+          j: true

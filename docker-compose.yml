@@ -5,9 +5,9 @@ services:
     image: mongo:3
     init: true
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: root-password
-      MONGO_INITDB_DATABASE: midnight_development
+      MONGO_INITDB_ROOT_USERNAME: 'root'
+      MONGO_INITDB_ROOT_PASSWORD: 'root-password'
+      MONGO_INITDB_DATABASE: 'midnight_development'
   application:
     build: .
     init: true
@@ -15,8 +15,8 @@ services:
       bash -c "((bundle check >/dev/null 2>&1) || bundle install) &&
       (echo Use \\\"make bash\\\" instead, no application here, just a development environment for the libraries.)"
     volumes:
-      - ".:/home/runner/app"
-      - "application-bundle:/usr/local/bundle"
+      - '.:/home/runner/app'
+      - 'application-bundle:/usr/local/bundle'
     depends_on:
       - database
 

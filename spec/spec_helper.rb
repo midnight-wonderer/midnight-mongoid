@@ -1,6 +1,9 @@
 require 'bundler/setup'
+require 'mongoid'
+require 'midnight/business_logic'
 require 'midnight/mongoid'
 
+::Mongoid.load!("#{__dir__}/support/mongoid.yml", :test)
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
