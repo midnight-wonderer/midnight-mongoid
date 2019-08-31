@@ -7,14 +7,15 @@ Gem::Specification.new do |spec|
   spec.version = Midnight::Mongoid::VERSION
   spec.author = 'Sarun Rattanasiri'
   spec.email = 'midnight_w@gmx.tw'
+  spec.license = 'BSD-3-Clause'
 
   spec.summary = 'A MongoDB integration of Midnight::BusinessLogic'
-  spec.description = 'This library provides the integration of Midnight::BusinessLogic '\
-    'and MongoDB like databases backed by the officially supported ODM, Mongoid'
-  spec.homepage = 'https://github.com/midnight-wonderer'
+  spec.description = 'This gem provides the integration between Midnight::BusinessLogic '\
+    'and the ODM officially supported by MongoDB Inc., Mongoid'
+  spec.homepage = 'https://slime.systems/'
   spec.metadata = {
     'homepage_uri' => spec.homepage,
-    # 'source_code_uri' => "https://gitlab.com/slime-systems/midnight-enterprise-toolkit/tree/v#{version}/midnight-business_logic"
+    'source_code_uri' => "https://github.com/rails/rails/tree/v#{version}"
   }
 
   spec.files = Dir['lib/**/*']
