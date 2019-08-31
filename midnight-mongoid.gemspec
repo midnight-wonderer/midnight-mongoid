@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.homepage = 'https://slime.systems/'
   spec.metadata = {
     'homepage_uri' => spec.homepage,
-    'source_code_uri' => "https://github.com/rails/rails/tree/v#{Midnight::Mongoid::VERSION}"
+    'source_code_uri' => "https://github.com/midnight-wonderer/midnight-mongoid/tree/v#{Midnight::Mongoid::VERSION}"
   }
 
   spec.files = Dir['lib/**/*']

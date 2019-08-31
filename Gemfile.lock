@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    midnight-mongoid (0.0.1)
+    midnight-mongoid (0.0.2)
       activesupport
       midnight-business_logic
       mongoid (>= 7.0.0)
