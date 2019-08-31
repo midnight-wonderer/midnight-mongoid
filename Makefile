@@ -15,3 +15,11 @@ up:
 
 bash:
 	(docker-compose run --rm application bash) || true
+
+.PHONY: build-gem release-gem
+
+build-gem:
+	bundle exec rake build
+
+release-gem: build-gem
+	bundle exec rake release
