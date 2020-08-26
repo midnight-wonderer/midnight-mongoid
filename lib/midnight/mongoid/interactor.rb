@@ -47,12 +47,15 @@ module Midnight
         return pending_events if pending_events.blank?
         state_record.state = aggregate.state
         @advance_state_metadata.call(state_record, pending_events)
-        @save_state.call(state_record)
-        @event_handler.call(
-          pending_events,
-          state_metadata
-        )
-        pending_events
+        begin
+          pending_events
+        ensure
+          @save_state.call(state_record)
+          @event_handler.call(
+            pending_events,
+            state_metadata
+          )
+        end
       end
     end
   end
