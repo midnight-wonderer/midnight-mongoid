@@ -1,5 +1,4 @@
 require 'active_support/core_ext/object'
-require 'active_support/core_ext/hash'
 require 'mongoid'
 
 module Midnight
@@ -32,10 +31,10 @@ module Midnight
       def save!
         return true unless @state_changed
         raise StaleObjectError unless _id.present?
-        update_result = collection.update_one({
+        update_result = self.class.where({
           _id: _id,
           lock_version: self.lock_version,
-        }.with_indifferent_access, {
+        }).update_all({
           '$set': {
             state: self.state,
             next_position: self.next_position,
@@ -43,7 +42,9 @@ module Midnight
           '$inc': {
             lock_version: 1
           }
-        }.with_indifferent_access)
+        })
+        # update_result is an instance of Mongo::Operation::Update::Result
+        # warning: matched_count is a part of the private API
         raise StaleObjectError if update_result.matched_count < 1
         !!(self.lock_version += 1)
       end
