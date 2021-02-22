@@ -53,7 +53,7 @@ module Midnight
           @save_state.call(state_record)
           @event_handler.call(
             pending_events,
-            state_metadata
+            **state_metadata
           )
         end
       end
