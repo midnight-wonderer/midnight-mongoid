@@ -51,6 +51,7 @@ module Midnight
 
       class << self
         def load(key:, **_)
+          return new unless key
           where(
             _id: key
           ).first_or_create!
