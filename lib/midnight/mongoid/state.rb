@@ -29,6 +29,15 @@ module Midnight
       end
 
       def save!
+        if new_record?
+          begin
+            super
+          rescue ::Mongo::Error::OperationFailure => e
+            raise e unless e.code == 11000 # E11000 duplicate key error
+            raise StaleObjectError
+          end
+          return true
+        end
         return true unless @state_changed
         raise StaleObjectError unless _id.present?
         update_result = self.class.where({
