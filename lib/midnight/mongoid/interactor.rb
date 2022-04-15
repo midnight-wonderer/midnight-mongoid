@@ -42,7 +42,7 @@ module Midnight
         aggregate = @build_aggregate.call(
           state: state_record.state
         )
-        state_metadata = state_record.metadata
+        current_metadata = state_record.metadata
         pending_events = aggregate_operator.call(aggregate)
         return pending_events if pending_events.blank?
         state_record.state = aggregate.state
@@ -51,9 +51,14 @@ module Midnight
           pending_events
         ensure
           @save_state.call(state_record)
+          persisted_metadata = state_record.metadata
+          handler_metadata = { # support lazy generation of id
+            **current_metadata.except(:state_id),
+            **persisted_metadata.slice(:state_id),
+          }
           @event_handler.call(
             pending_events,
-            **state_metadata
+            **handler_metadata,
           )
         end
       end
