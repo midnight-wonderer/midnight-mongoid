@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'midnight/business_logic'
 
 module Midnight

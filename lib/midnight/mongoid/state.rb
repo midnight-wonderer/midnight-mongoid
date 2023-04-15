@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/object'
 require 'mongoid'
 
@@ -42,15 +44,15 @@ module Midnight
         raise StaleObjectError unless _id.present?
         update_result = self.class.where({
           _id: _id,
-          lock_version: self.lock_version,
+          lock_version: lock_version,
         }).update_all({
           '$set': {
-            state: self.state,
+            state: state,
             next_position: self.next_position,
           }.compact,
           '$inc': {
-            lock_version: 1
-          }
+            lock_version: 1,
+          },
         })
         # update_result is an instance of Mongo::Operation::Update::Result
         # warning: matched_count is a part of the private API
@@ -62,7 +64,7 @@ module Midnight
         def load(key:, **_)
           return new unless key
           where(
-            _id: key
+            _id: key,
           ).first_or_create!
         rescue ::Mongo::Error::OperationFailure => e
           raise e unless e.code == 11000

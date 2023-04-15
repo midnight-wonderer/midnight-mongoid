@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/object'
 require 'midnight/business_logic'
 
@@ -6,7 +8,7 @@ module Midnight
     DEFAULT_COMMAND_VALIDATOR = lambda(&:validate!)
 
     class Interactor
-      def initialize(\
+      def initialize(
         aggregate_key:,
         build_aggregate:,
         event_handler: Commons::NULL_EVENT_HANDLER,
@@ -36,17 +38,21 @@ module Midnight
       private
 
       def transaction(&aggregate_operator)
-        state_record = @state_persistence.load(
-          key: @aggregate_key
-        )
+        lazy_key = @aggregate_key.respond_to?(:call)
+        state_record = if lazy_key
+          @state_persistence.load(key: nil)
+        else
+          @state_persistence.load(key: @aggregate_key)
+        end
         aggregate = @build_aggregate.call(
-          state: state_record.state
+          state: state_record.state,
         )
         current_metadata = state_record.metadata
         pending_events = aggregate_operator.call(aggregate)
         return pending_events if pending_events.blank?
         state_record.state = aggregate.state
         @advance_state_metadata.call(state_record, pending_events)
+        state_record._id = @aggregate_key.call if lazy_key
         begin
           pending_events
         ensure
